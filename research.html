@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>Nur Mustafaoğlu's Home Page</title>
+        <meta content="[Nur Mustafaoğlu]" name="description">
+        <meta content="nano, ITU, Notre Dame, bioengineering, genetic, biomimetic, physics, cornea, Nur Mustafaoglu" name="keywords">
+        <meta content="Copyright (c) 2011 Nur Mustafaoglu" name="Copyright">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <link id="page_favicon" href="img/favicon.ico" rel="icon" type="image/x-icon" />
+
+        <!-- Bootstrap core CSS -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/custom.css" rel="stylesheet">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
+        <script src="js/bootstrap.min.js"></script>
+
+        <!-- Banner js codes
+        <script src="js/banner/TweenLite.min.js"></script>
+        <script src="js/banner/EasePack.min.js"></script>
+        <script src="js/banner/usermap.js"></script>
+        -->
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#header-container').load('template_header.html');
+                $('#footer-container').load('template_footer.html');
+
+                $(document).on('click', '.panel-heading', function(e){
+                    var $this = $(this);
+                    if(!$this.hasClass('panel-collapsed')) {
+                        $this.parents('.panel').find('.panel-body').slideUp();
+                        $this.addClass('panel-collapsed');
+                        $this.find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+                    } else {
+                        $this.parents('.panel').find('.panel-body').slideDown();
+                        $this.removeClass('panel-collapsed');
+                        $this.find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+                    }
+                })
+            });
+        </script>
+
+        <script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-26979064-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+
+    </head>
+
+    <body>
+
+        <div id="header-container"></div>
+
+        <div id="content" class="container-fluid">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12" style="margin-top:10px; margin-bottom:10px;"> 
+                            
+                        <h3>Recent Research Projects</h3>
+
+                        <div class="panel panel-default">
+                          <div class="panel-heading">
+                            <h3 class="panel-title">Antibody Purification</h3>
+                          </div>
+                          <div class="panel-body">
+                            <div class="col-md-4">
+                                <img class="img-responsive" alt="antibody purification" src="img/research/antibody-purification-2.png"> 
+                            </div>
+
+                            <div class="col-md-8">
+                                The objective of this project is to design a novel affinity membrane chromatography technique for purification of monoclonal and polyclonal antibodies from cell culture media and ascites fluids. This method utilizes the nucleotide-binding site (NBS) that is located on variable domain of Fab region nearly all antibodies to facilitate capturing antibodies on a membrane affinity column. 
+                            </div>
+
+                          </div>
+                        </div>
+
+                        <div class="panel panel-default">
+                          <div class="panel-heading">
+                            <h3 class="panel-title">Site-specific fab fragment biotinylation at the conserved nucleotide binding site for enhanced Ebola detection</h3>
+                          </div>
+                          <div class="panel-body">
+                            <div class="col-md-12">
+                                <p>
+                                    The nucleotide binding site (NBS) is a highly conserved region between the variable light and heavy chains at the Fab domains of all antibodies, and a small molecule that we identified, indole-3-butyric acid (IBA), binds specifically to this site. Fab fragment, with its small size and simple production methods compared to intact antibody, is good candidate for use in miniaturized diagnostic devices and targeted therapeutic applications. However, commonly used modification techniques are not well suited for Fab fragments as they are often more delicate than intact antibodies. Fab fragments are of particular interest for sensor surface functionalization but immobilization results in damage to the antigen binding site and greatly reduced activity due to their truncated size that allows only a small area that can bind to surfaces without impeding antigen binding. In this study, we describe an NBS-UV photocrosslinking functionalization method (UV-NBS<sup>Biotin</sup>) in which a Fab fragment is site-specifically biotinylated with an IBA-EG<sub>11</sub>-Biotin linker via UV energy exposure (1 J/cm<sup>2</sup>) without affecting its antigen binding activity. This study demonstrates successful immobilization of biotinylated Ebola detecting Fab fragment (KZ52 Fab fragment) via the UV-NBS<sup>Biotin</sup> method yielding 1031-fold and 2-fold better antigen detection sensitivity compared to commonly used immobilization methods: direct physical adsorption and NHS-Biotin functionalization, respectively. Utilization of the UV-NBS<sup>Biotin</sup> method for site-specific conjugation to Fab fragment represents a proof of concept use of Fab fragment for various diagnostic and therapeutic applications with numerous fluorescent probes, affinity molecules and peptides.
+                                </p>
+                                <iframe width="560" height="315" src="https://www.youtube.com/embed/7BSRV6fxedA" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                          </div>
+                        </div>
+
+                        <h3>Previous Projects & Research</h3>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading panel-collapsed">
+                                <h3 class="panel-title">Nano Science and Nano Engineering M.Sc Thesis Project</h3>
+                                <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                            </div>
+                            <div class="panel-collapsed collapse panel-body">
+                                <div class="col-md-4">
+                                    <img class="img-responsive" src="img/research/alignment-scheme.png"> 
+                                </div>
+                                <div class="col-md-8">
+                                    <p>
+                                        Langmuir Blodgett assembly of peptide functionalized nanoparticles onto quartz surfaces and their characterization, October 2011 - 2012<br/>
+                                        <b>Advisors:</b> Prof. Dr. Mustafa URGEN, Prof. Dr. Candan TAMERLER
+                                    </p>
+
+                                    <p>
+                                        <u>Abstact:</u> <i>A bio-enabled fabrication method based on Langmuir Blodgett (LB) technique was developed to create gold nanoparticle patterns on silicate based surfaces. We first designed chimeric peptide which is composed of gold and silica specific domains as a molecular linker between gold nanoparticles and the silicate surface. We then optimized the solution properties to prevent the aggregation of the gold nanoparticles and to promote the LB film formation of the peptides onto the substrate. The binding affinity of AuBP4-QBP2 to nanoparticles is confirmed by absorption spectra. Based on several analyses including UV/Vis spectra, FT-IR and Surface Pressure/Area isotherms, EtOH:ultrapure water systems was chosen. Peptide mediated LB film formation of the AuNPs on silicate based glass were characterized using AFM and FEG-SEM. The developed peptide based Langmuir Blodgett technique provides a platform to develop organic–inorganic hybrid structures over large areas using environmentally friendly conditions.</i>
+                                    </p>    
+
+                                    <table>
+                                        <tr>
+                                            <td><a href="files/nur_mustafaoglu_msc_thesis.pdf" target="_blank"><img id="logo" src="img/pdf_logo.png" width="50px"></a></td>
+                                            <td>
+                                                <i>Langmuir Blodgett assembly of peptide functionalized nanoparticles onto quartz surfaces and their characterization</i>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading panel-collapsed">
+                                <h3 class="panel-title">Kornea Project</h3>
+                                <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                            </div>
+                            <div class="panel-collapsed collapse panel-body">
+                                <div class="col-md-4">
+                                    <a href="img/research/Cornea-Bioceramics.pdf" target="_blank" style="margin-right:10px;">
+                                    <img style="width:200px;" src="img/research/Cornea-Bioceramics_thumb.png">
+                                    </a>
+                                </div>
+                                <div class="col-md-8">
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading panel-collapsed">
+                                <h3 class="panel-title">Physics Engineering Graduation Project</h3>
+                                <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                            </div>
+                            <div class="panel-collapsed collapse panel-body">
+                                <div class="col-md-4">
+                                    <img class="img-responsive" src="img/research/graphs.png"> 
+                                </div>
+                                <div class="col-md-8">
+                                    Photopolymerization processes in corneal collagen Cross-Linking for human cornea <br/>
+                                    <b>Advisor:</b> Prof. Dr. Gönül ÖZEN   
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading panel-collapsed">
+                                <h3 class="panel-title">Molecular Biology and Genetic Graduation Project</h3>
+                                <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                            </div>
+                            <div class="panel-collapsed collapse panel-body">
+                                <div class="col-md-4">
+                                    <img class="img-responsive" src="img/research/mol-bio.png"> 
+                                </div>
+                                <div class="col-md-8">
+                                    <p> 
+                                        Clonning of DsRed gene into E.coli expression vector <br/>
+                                        <b>Advisors:</b> Prof. Dr. Candan TAMERLER, Assoc. Prof. Dr. Ayten YAZGAN KARATAŞ 
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"></h3>
+                                <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                            </div>
+                            <div class="panel-collapsed collapse panel-body">
+                                <div class="col-md-4">
+                                    
+                                </div>
+                                <div class="col-md-8">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        -->
+
+                    </div> 
+                </div>
+            </div>
+        </div>
+
+        <div id="footer-container"></div>
+
+    </body>
+</html>

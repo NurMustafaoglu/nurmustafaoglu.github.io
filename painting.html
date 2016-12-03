@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>Nur Mustafaoğlu's Home Page</title>
+        <meta content="[Nur Mustafaoğlu]" name="description">
+        <meta content="nano, ITU, Notre Dame, bioengineering, genetic, biomimetic, physics, cornea, Nur Mustafaoglu" name="keywords">
+        <meta content="Copyright (c) 2011 Nur Mustafaoglu" name="Copyright">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <link id="page_favicon" href="img/favicon.ico" rel="icon" type="image/x-icon" />
+
+        <!-- Bootstrap core CSS -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/custom.css" rel="stylesheet">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
+        <script src="js/bootstrap.min.js"></script>
+
+        <!-- Banner js codes
+        <script src="js/banner/TweenLite.min.js"></script>
+        <script src="js/banner/EasePack.min.js"></script>
+        <script src="js/banner/usermap.js"></script>
+        -->
+
+        <!-- Core CSS file -->
+    <link rel="stylesheet" href="photoswipe/photoswipe.css"> 
+
+    <!-- Skin CSS file (styling of UI - buttons, caption, etc.)
+         In the folder of skin CSS file there are also:
+         - .png and .svg icons sprite, 
+         - preloader.gif (for browsers that do not support CSS animations) -->
+    <link rel="stylesheet" href="photoswipe/default-skin/default-skin.css"> 
+
+    <!-- Core JS file -->
+    <script src="photoswipe/photoswipe.min.js"></script> 
+
+    <!-- UI JS file -->
+    <script src="photoswipe/photoswipe-ui-default.min.js"></script> 
+        
+
+    <script type="text/javascript">
+        var openPhotoSwipe = function() {
+            var pswpElement = document.querySelectorAll('.pswp')[0];
+
+            // build items array
+            var items = [
+                {
+                    src: 'img/painting/drawing1.jpg',
+                    w: 400,
+                    h: 710
+                },
+                {
+                    src: 'img/painting/drawing2.png',
+                    w: 800,
+                    h: 450
+                }
+            ];
+            
+            // define options (if needed)
+            var options = {
+                     // history & focus options are disabled on CodePen        
+                history: false,
+                focus: false,
+
+                showAnimationDuration: 0,
+                hideAnimationDuration: 0
+                
+            };
+            
+            var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+            gallery.init();
+        };
+
+        var initPhotoSwipeFromDOM = function(gallerySelector) {
+
+                // parse slide data (url, title, size ...) from DOM elements 
+                // (children of gallerySelector)
+                var parseThumbnailElements = function(el) {
+                    var thumbElements = el.childNodes,
+                        numNodes = thumbElements.length,
+                        items = [],
+                        figureEl,
+                        linkEl,
+                        size,
+                        item;
+
+                    for(var i = 0; i < numNodes; i++) {
+
+                        figureEl = thumbElements[i]; // <figure> element
+
+                        // include only element nodes 
+                        if(figureEl.nodeType !== 1) {
+                            continue;
+                        }
+
+                        linkEl = figureEl.children[0]; // <a> element
+
+                        size = linkEl.getAttribute('data-size').split('x');
+
+                        // create slide object
+                        item = {
+                            src: linkEl.getAttribute('href'),
+                            w: parseInt(size[0], 10),
+                            h: parseInt(size[1], 10)
+                        };
+
+
+
+                        if(figureEl.children.length > 1) {
+                            // <figcaption> content
+                            item.title = figureEl.children[1].innerHTML; 
+                        }
+
+                        if(linkEl.children.length > 0) {
+                            // <img> thumbnail element, retrieving thumbnail url
+                            item.msrc = linkEl.children[0].getAttribute('src');
+                        } 
+
+                        item.el = figureEl; // save link to element for getThumbBoundsFn
+                        items.push(item);
+                    }
+
+                    return items;
+                };
+
+                // find nearest parent element
+                var closest = function closest(el, fn) {
+                    return el && ( fn(el) ? el : closest(el.parentNode, fn) );
+                };
+
+                // triggers when user clicks on thumbnail
+                var onThumbnailsClick = function(e) {
+                    e = e || window.event;
+                    e.preventDefault ? e.preventDefault() : e.returnValue = false;
+
+                    var eTarget = e.target || e.srcElement;
+
+                    // find root element of slide
+                    var clickedListItem = closest(eTarget, function(el) {
+                        return (el.tagName && el.tagName.toUpperCase() === 'FIGURE');
+                    });
+
+                    if(!clickedListItem) {
+                        return;
+                    }
+
+                    // find index of clicked item by looping through all child nodes
+                    // alternatively, you may define index via data- attribute
+                    var clickedGallery = clickedListItem.parentNode,
+                        childNodes = clickedListItem.parentNode.childNodes,
+                        numChildNodes = childNodes.length,
+                        nodeIndex = 0,
+                        index;
+
+                    for (var i = 0; i < numChildNodes; i++) {
+                        if(childNodes[i].nodeType !== 1) { 
+                            continue; 
+                        }
+
+                        if(childNodes[i] === clickedListItem) {
+                            index = nodeIndex;
+                            break;
+                        }
+                        nodeIndex++;
+                    }
+
+
+
+                    if(index >= 0) {
+                        // open PhotoSwipe if valid index found
+                        openPhotoSwipe( index, clickedGallery );
+                    }
+                    return false;
+                };
+
+                // parse picture index and gallery index from URL (#&pid=1&gid=2)
+                var photoswipeParseHash = function() {
+                    var hash = window.location.hash.substring(1),
+                    params = {};
+
+                    if(hash.length < 5) {
+                        return params;
+                    }
+
+                    var vars = hash.split('&');
+                    for (var i = 0; i < vars.length; i++) {
+                        if(!vars[i]) {
+                            continue;
+                        }
+                        var pair = vars[i].split('=');  
+                        if(pair.length < 2) {
+                            continue;
+                        }           
+                        params[pair[0]] = pair[1];
+                    }
+
+                    if(params.gid) {
+                        params.gid = parseInt(params.gid, 10);
+                    }
+
+                    return params;
+                };
+
+                var openPhotoSwipe = function(index, galleryElement, disableAnimation, fromURL) {
+                    var pswpElement = document.querySelectorAll('.pswp')[0],
+                        gallery,
+                        options,
+                        items;
+
+                    items = parseThumbnailElements(galleryElement);
+
+                    // define options (if needed)
+                    options = {
+
+                        // define gallery index (for URL)
+                        galleryUID: galleryElement.getAttribute('data-pswp-uid'),
+
+                        getThumbBoundsFn: function(index) {
+                            // See Options -> getThumbBoundsFn section of documentation for more info
+                            var thumbnail = items[index].el.getElementsByTagName('img')[0], // find thumbnail
+                                pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
+                                rect = thumbnail.getBoundingClientRect(); 
+
+                            return {x:rect.left, y:rect.top + pageYScroll, w:rect.width};
+                        }
+
+                    };
+
+                    // PhotoSwipe opened from URL
+                    if(fromURL) {
+                        if(options.galleryPIDs) {
+                            // parse real index when custom PIDs are used 
+                            // http://photoswipe.com/documentation/faq.html#custom-pid-in-url
+                            for(var j = 0; j < items.length; j++) {
+                                if(items[j].pid == index) {
+                                    options.index = j;
+                                    break;
+                                }
+                            }
+                        } else {
+                            // in URL indexes start from 1
+                            options.index = parseInt(index, 10) - 1;
+                        }
+                    } else {
+                        options.index = parseInt(index, 10);
+                    }
+
+                    // exit if index not found
+                    if( isNaN(options.index) ) {
+                        return;
+                    }
+
+                    if(disableAnimation) {
+                        options.showAnimationDuration = 0;
+                    }
+
+                    // Pass data to PhotoSwipe and initialize it
+                    gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+                    gallery.init();
+                };
+
+                // loop through all gallery elements and bind events
+                var galleryElements = document.querySelectorAll( gallerySelector );
+
+                for(var i = 0, l = galleryElements.length; i < l; i++) {
+                    galleryElements[i].setAttribute('data-pswp-uid', i+1);
+                    galleryElements[i].onclick = onThumbnailsClick;
+                }
+
+                // Parse URL and open gallery if it contains #&pid=3&gid=1
+                var hashData = photoswipeParseHash();
+                if(hashData.pid && hashData.gid) {
+                    openPhotoSwipe( hashData.pid ,  galleryElements[ hashData.gid - 1 ], true, true );
+                }
+            };
+
+        $(document).ready(function () {
+            //openPhotoSwipe();
+            initPhotoSwipeFromDOM('.my-gallery');
+        });
+    </script>
+
+    <style type="text/css">
+        .my-gallery {
+          width: 100%;
+          float: left;
+        }
+        .my-gallery img {
+          width: 100%;
+          height: 200px;
+          margin: 20px;
+        }
+        .my-gallery figure {
+          display: block;
+          float: left;
+          margin: 0 5px 5px 0;
+          width: 150px;
+        }
+        .my-gallery figcaption {
+          display: none;
+        }
+    </style>
+
+        <script type="text/javascript">
+            
+            $(document).ready(function () {
+                $('#header-container').load('template_header.html');
+                $('#footer-container').load('template_footer.html');
+            });
+        </script>
+
+        <script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-26979064-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+
+    </head>
+
+    <body>
+
+        <div id="header-container"></div>
+
+        <div id="content" class="container-fluid">
+            <div class="container">
+                <div class="row">
+                    <div class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+
+               <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing32.jpg" itemprop="contentUrl" data-size="1398x1000">
+                    <img src="img/painting/drawing32.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">Anneler Gunu - 2016 /figcaption>                         
+                </figure>
+
+               <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing31.jpg" itemprop="contentUrl" data-size="1342x1000">
+                    <img src="img/painting/drawing31.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">Happy Moms day - 2</figcaption>                         
+                </figure>
+
+               <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing30.jpg" itemprop="contentUrl" data-size="1000x1364">
+                    <img src="img/painting/drawing30.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">Happy Moms day - 1</figcaption>                         
+                </figure>
+
+               <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing29.jpg" itemprop="contentUrl" data-size="1000x1333">
+                    <img src="img/painting/drawing29.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">April Flowers</figcaption>                         
+                </figure>
+
+               <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing28.jpg" itemprop="contentUrl" data-size="1000x1334">
+                    <img src="img/painting/drawing28.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">Book cards</figcaption>                         
+                </figure>
+
+               <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing27.jpg" itemprop="contentUrl" data-size="1000x1333">
+                    <img src="img/painting/drawing27.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">Brain - Devil's dictionary</figcaption>                         
+                </figure>
+
+               <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing26.jpg" itemprop="contentUrl" data-size="2364x3108">
+                    <img src="img/painting/drawing26.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">Amor Fati</figcaption>                         
+                </figure>
+
+               <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing25.jpg" itemprop="contentUrl" data-size="1000x745">
+                    <img src="img/painting/drawing25.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">Valentine Day - 2016</figcaption>                         
+                </figure>
+
+               <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing24.jpg" itemprop="contentUrl" data-size="2328x3056">
+                    <img src="img/painting/drawing24.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">basak - alcohol ink</figcaption>                         
+                </figure>
+
+               <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing23.jpg" itemprop="contentUrl" data-size="2396x3192">
+                    <img src="img/painting/drawing23.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">blue cotton - alcohol ink</figcaption>                         
+                </figure>
+
+               <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing22.jpg" itemprop="contentUrl" data-size="2364x3136">
+                    <img src="img/painting/drawing22.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">flower - alcohol ink</figcaption>                         
+                </figure>
+
+               <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing21.jpg" itemprop="contentUrl" data-size="1632x1077">
+                    <img src="img/painting/drawing21.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">mandala trial - 2</figcaption>                         
+                </figure>
+
+                <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing20.jpg" itemprop="contentUrl" data-size="1393x998">
+                    <img src="img/painting/drawing20.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">alcohol ink - dots</figcaption>                         
+                </figure>
+
+                <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing19.jpg" itemprop="contentUrl" data-size="847x1103">
+                    <img src="img/painting/drawing19.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">purple tulip - alcohol ink</figcaption>                         
+                </figure>
+
+                <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing18.jpg" itemprop="contentUrl" data-size="847x1103">
+                    <img src="img/painting/drawing18.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">flower - alcohol ink - doodle</figcaption>                         
+                </figure>
+
+                <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing17.jpg" itemprop="contentUrl" data-size="1086x850">
+                    <img src="img/painting/drawing17.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">alcohol ink - doodle</figcaption>                         
+                </figure>
+
+                <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing16.jpg" itemprop="contentUrl" data-size="1099x850">
+                    <img src="img/painting/drawing16.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">alcohol ink - doodle</figcaption>                         
+                </figure>
+
+                <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing15.jpg" itemprop="contentUrl" data-size="1650x1280">
+                    <img src="img/painting/drawing15.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">alcohol ink with doodle</figcaption>                         
+                </figure>
+
+                <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing14.jpg" itemprop="contentUrl" data-size="548x428">
+                    <img src="img/painting/drawing14.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">flower on dots</figcaption>                         
+                </figure>
+
+                <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing13.jpg" itemprop="contentUrl" data-size="597x608">
+                    <img src="img/painting/drawing13.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">first mandala trial</figcaption>                         
+                </figure>
+
+                <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing12.jpg" itemprop="contentUrl" data-size="602x604">
+                    <img src="img/painting/drawing12.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">authentic flowers</figcaption>                         
+                </figure>
+
+                <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing11.jpg" itemprop="contentUrl" data-size="1786x1823">
+                    <img src="img/painting/drawing11.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">carsaf deseni</figcaption>                         
+                </figure>
+
+                <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing10.jpg" itemprop="contentUrl" data-size="597x606">
+                    <img src="img/painting/drawing10.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">solar storm</figcaption>                         
+                </figure>
+
+                <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing9.jpg" itemprop="contentUrl" data-size="596x902">
+                    <img src="img/painting/drawing9.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">deneme-1</figcaption>                         
+                </figure>
+
+                <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing8.jpg" itemprop="contentUrl" data-size="598x903">
+                    <img src="img/painting/drawing8.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">ya icindesindir cemberin ya da</figcaption>                         
+                </figure>
+
+                <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing7.jpg" itemprop="contentUrl" data-size="800x1088">
+                    <img src="img/painting/thumb_drawing7.png" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">flowers</figcaption>                         
+                </figure>
+
+                <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing6.jpg" itemprop="contentUrl" data-size="2676x3614">
+                    <img src="img/painting/thumb_drawing6.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">very first trial - flowers</figcaption>                         
+                </figure>
+
+                <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing5.jpg" itemprop="contentUrl" data-size="2680x3614">
+                    <img src="img/painting/thumb_drawing5.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">ilkbahar</figcaption>                         
+                </figure>
+
+                <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing4.jpg" itemprop="contentUrl" data-size="2718x3646">
+                    <img src="img/painting/thumb_drawing4.jpg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">sonbahar</figcaption>                         
+                </figure>
+
+                <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing1.jpg" itemprop="contentUrl" data-size="400x710">
+                    <img src="img/painting/thumb_drawing1.jpeg" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">an old dream</figcaption>                         
+                </figure>
+
+                <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <a href="img/painting/drawing2.png" itemprop="contentUrl" data-size="800x450">
+                    <img src="img/painting/thumb_drawing2.png" itemprop="thumbnail" alt="Image description" />
+                  </a>
+                  <figcaption itemprop="caption description">daisy</figcaption>
+                </figure>
+
+              </div>
+        
+            <!-- Root element of PhotoSwipe. Must have class pswp. -->
+            <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+                <!-- Background of PhotoSwipe. 
+                     It's a separate element as animating opacity is faster than rgba(). -->
+                <div class="pswp__bg"></div>
+
+                <!-- Slides wrapper with overflow:hidden. -->
+                <div class="pswp__scroll-wrap">
+
+                    <!-- Container that holds slides. 
+                        PhotoSwipe keeps only 3 of them in the DOM to save memory.
+                        Don't modify these 3 pswp__item elements, data is added later on. -->
+                    <div class="pswp__container">
+                        <div class="pswp__item"></div>
+                        <div class="pswp__item"></div>
+                        <div class="pswp__item"></div>
+                    </div>
+
+                    <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+                    <div class="pswp__ui pswp__ui--hidden">
+
+                        <div class="pswp__top-bar">
+
+                            <!--  Controls are self-explanatory. Order can be changed. -->
+
+                            <div class="pswp__counter"></div>
+
+                            <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                            <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                            <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                            <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                            <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                            <!-- element will get class pswp__preloader--active when preloader is running -->
+                            <div class="pswp__preloader">
+                                <div class="pswp__preloader__icn">
+                                  <div class="pswp__preloader__cut">
+                                    <div class="pswp__preloader__donut"></div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                            <div class="pswp__share-tooltip"></div> 
+                        </div>
+
+                        <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+                        </button>
+
+                        <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+                        </button>
+
+                        <div class="pswp__caption">
+                            <div class="pswp__caption__center"></div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer-container"></div>
+
+    </body>
+</html>
