@@ -20,11 +20,16 @@
         <script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
         <script src="js/bootstrap.min.js"></script>
 
-        <!-- Banner js codes
-        <script src="js/banner/TweenLite.min.js"></script>
-        <script src="js/banner/EasePack.min.js"></script>
-        <script src="js/banner/usermap.js"></script>
-        -->
+        <style>
+            .bgimage {
+                background: url('img/banner-2016.png');
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-position: center; 
+                background-size: contain;
+            }
+        </style>
+
 
         <script type="text/javascript">
             
@@ -48,7 +53,7 @@
 
     </head>
 
-    <body>
+    <body class="bgimage">
 
         <div id="header-container"></div>
 
@@ -103,6 +108,12 @@
 
                     </div> 
                 </div>
+
+                <!--
+                <div class="col-md-12" style="margin-bottom:-20px;">
+                    <img class="img-responsive" src="img/banner-2016.png"> 
+                </div>
+                -->
             </div>
         </div>
 
